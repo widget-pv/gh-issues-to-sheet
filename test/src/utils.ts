@@ -5,7 +5,20 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 export const SHEET_ID = '1JsAPGa4gKLE5vp_-Ph8WqzP6klpMt6R34k-ps2_-3Jo';
 export const REPO = 'serban-petrescu/gh-issues-to-sheet-test-issues';
 
-export const HEADER = ['repository', 'id', 'type', 'title', 'state', 'url', 'assignee', 'milestone', 'createdBy', 'createdAt', 'closedAt'];
+export const HEADER = [
+    'repository',
+    'id',
+    'type',
+    'title',
+    'state',
+    'url',
+    'assignee',
+    'milestone',
+    'createdBy',
+    'createdAt',
+    'closedAt',
+    'labels',
+];
 export const ACTUAL_ISSUES = [
     [
         'serban-petrescu/gh-issues-to-sheet-test-issues',
@@ -19,6 +32,7 @@ export const ACTUAL_ISSUES = [
         'serban-petrescu',
         '2023-01-01T13:50:08Z',
         '2023-01-01T13:50:45Z',
+        '',
     ],
     [
         'serban-petrescu/gh-issues-to-sheet-test-issues',
@@ -31,6 +45,7 @@ export const ACTUAL_ISSUES = [
         'Milestone',
         'serban-petrescu',
         '2023-01-01T13:50:14Z',
+        '',
         '',
     ],
     [
@@ -45,6 +60,7 @@ export const ACTUAL_ISSUES = [
         'serban-petrescu',
         '2023-01-01T13:50:19Z',
         '',
+        '',
     ],
     [
         'serban-petrescu/gh-issues-to-sheet-test-issues',
@@ -58,6 +74,7 @@ export const ACTUAL_ISSUES = [
         'serban-petrescu',
         '2023-01-01T13:51:32Z',
         '2023-01-01T13:51:55Z',
+        '',
     ],
     [
         'serban-petrescu/gh-issues-to-sheet-test-issues',
@@ -70,6 +87,7 @@ export const ACTUAL_ISSUES = [
         '',
         'serban-petrescu',
         '2023-01-01T13:53:44Z',
+        '',
         '',
     ],
 ];
@@ -87,6 +105,7 @@ export const EXTRA_ISSUES = [
         'serban-petrescu',
         '2023-01-01T13:55:32Z',
         '2023-01-01T13:55:56Z',
+        '',
     ],
     [
         'serban-petrescu/gh-issues-to-sheet-test-issues',
@@ -99,6 +118,7 @@ export const EXTRA_ISSUES = [
         '',
         'serban-petrescu',
         '2023-01-01T13:57:01Z',
+        '',
         '',
     ],
 ];
