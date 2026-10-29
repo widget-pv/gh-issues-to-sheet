@@ -24,6 +24,7 @@ describe('GitHubReader', () => {
             created_at: `2022-12-30T09:${String(number).padStart(2, '0')}:00.000Z`,
             closed_at: '2022-12-30T10:00:00.000Z',
             repository_url: 'https://github.com/serban-petrescu/gh-issues-to-sheet',
+            labels: [{ name: 'bug' }, 'question', { name: undefined }],
         };
     }
 
@@ -47,8 +48,8 @@ describe('GitHubReader', () => {
             const result = await reader.findByCriteria({ repo: 'repo', types: ['issue'] });
 
             expect(result).toMatchObject([
-                { id: '1', repository },
-                { id: '2', repository },
+                { id: '1', repository, labels: ['bug', 'question'] },
+                { id: '2', repository, labels: ['bug', 'question'] },
             ]);
             expect(issuesAndPullRequests).toHaveBeenCalledTimes(3);
             expect(issuesAndPullRequests).toHaveBeenNthCalledWith(1, expect.objectContaining({ page: 1 }));
