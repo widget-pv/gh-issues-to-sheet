@@ -121,6 +121,7 @@ export class GSheetWriter extends BaseLoggedComponent implements IssueWriter {
             issue.createdBy ?? '',
             issue.createdAt,
             issue.closedAt ?? '',
+            issue.labels,
         ];
     }
 
