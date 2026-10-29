@@ -59,6 +59,7 @@ export class GitHubReader extends BaseLoggedComponent implements IssueReader {
                     closedAt: issue.closed_at ?? null,
                     createdAt: issue.created_at,
                     url: issue.html_url,
+                    labels: issue.labels,
                     repository: this.urlToRepoName(issue.repository_url),
                 }))
             );
