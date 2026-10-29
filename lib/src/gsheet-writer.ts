@@ -4,7 +4,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { BaseLoggedComponent } from './logger';
 import type { Issue, IssueWriter, SheetProps } from './model';
 
-export const HEADER = ['repository', 'id', 'type', 'title', 'state', 'url', 'assignee', 'milestone', 'createdBy', 'createdAt', 'closedAt'];
+export const HEADER = ['repository', 'id', 'type', 'title', 'state', 'url', 'assignee', 'milestone', 'createdBy', 'createdAt', 'closedAt', 'labels'];
 
 export type SheetFactory = (id: string) => Promise<GoogleSpreadsheet>;
 
@@ -73,6 +73,7 @@ export class GSheetWriter extends BaseLoggedComponent implements IssueWriter {
             this.updateField(row, issue, 'createdBy'),
             this.updateField(row, issue, 'createdAt'),
             this.updateField(row, issue, 'closedAt'),
+            this.updateField(row, issue, 'labels'),
         ];
         if (updates.some(v => v)) {
             await this.retrySave(row);
