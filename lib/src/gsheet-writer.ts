@@ -4,7 +4,20 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { BaseLoggedComponent } from './logger';
 import type { Issue, IssueWriter, SheetProps } from './model';
 
-export const HEADER = ['repository','id','type','title','state','url','assignee','milestone','createdBy','createdAt','closedAt','labels',];
+export const HEADER = [
+    'repository',
+    'id',
+    'type',
+    'title',
+    'state',
+    'url',
+    'assignee',
+    'milestone',
+    'createdBy',
+    'createdAt',
+    'closedAt',
+    'labels',
+];
 
 export type SheetFactory = (id: string) => Promise<GoogleSpreadsheet>;
 
