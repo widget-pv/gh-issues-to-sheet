@@ -23,6 +23,8 @@ export type Issue = {
     createdAt: string;
     closedAt: string | null;
     labels: string[];
+    issueType: string | null;
+    priority: string | null;
 };
 
 export type IssueSearchCriteria = {

@@ -36,6 +36,8 @@ describe('GSheetWriter', () => {
             milestone: null,
             closedAt: null,
             labels: ['bug', 'help wanted'],
+            issueType: 'Bug',
+            priority: 'High',
             url: `https://github.com/serban-petrescu/gh-issues-to-sheet/issues/${id}`,
             createdAt: `2022-12-30T09:${id.padStart(2, '0')}:00.000Z`,
             repository,
@@ -187,4 +189,3 @@ describe('GSheetWriter', () => {
         });
     });
 });
-

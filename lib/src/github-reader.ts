@@ -3,6 +3,17 @@ import { Octokit } from '@octokit/rest';
 import { BaseLoggedComponent } from './logger';
 import type { Issue, IssueReader, IssueSearchCriteria, IssueType } from './model';
 
+// Issue types and issue fields are newer than the bundled Octokit typings.
+type IssueFieldValue = {
+    issue_field_name?: string;
+    value: string | number | null;
+    single_select_option?: { name: string } | null;
+};
+type IssueExtras = {
+    type?: { name: string } | null;
+    issue_field_values?: IssueFieldValue[];
+};
+
 export class GitHubReader extends BaseLoggedComponent implements IssueReader {
     constructor(private readonly client: Octokit) {
         super();
@@ -61,10 +72,21 @@ export class GitHubReader extends BaseLoggedComponent implements IssueReader {
                     url: issue.html_url,
                     repository: this.urlToRepoName(issue.repository_url),
                     labels: issue.labels.map(label => (typeof label === 'string' ? label : label.name ?? '')).filter(name => name),
+                    issueType: (issue as IssueExtras).type?.name ?? null,
+                    priority: this.findFieldValue(issue as IssueExtras, 'priority'),
                 }))
             );
         }
         return [result, true];
+    }
+
+    private findFieldValue(issue: IssueExtras, name: string): string | null {
+        const field = issue.issue_field_values?.find(f => f.issue_field_name?.toLowerCase() === name);
+        if (!field) {
+            return null;
+        }
+        const value = field.single_select_option?.name ?? field.value;
+        return value === null || value === undefined ? null : String(value);
     }
 
     private urlToRepoName(url: string): string {

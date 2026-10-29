@@ -17,6 +17,8 @@ export const HEADER = [
     'createdAt',
     'closedAt',
     'labels',
+    'issueType',
+    'priority',
 ];
 
 export type SheetFactory = (id: string) => Promise<GoogleSpreadsheet>;
@@ -87,6 +89,8 @@ export class GSheetWriter extends BaseLoggedComponent implements IssueWriter {
             this.updateField(row, issue, 'createdAt'),
             this.updateField(row, issue, 'closedAt'),
             this.updateField(row, issue, 'labels'),
+            this.updateField(row, issue, 'issueType'),
+            this.updateField(row, issue, 'priority'),
         ];
         if (updates.some(v => v)) {
             await this.retrySave(row);
@@ -140,6 +144,8 @@ export class GSheetWriter extends BaseLoggedComponent implements IssueWriter {
             issue.createdAt,
             issue.closedAt ?? '',
             issue.labels.join(', '),
+            issue.issueType ?? '',
+            issue.priority ?? '',
         ];
     }
 

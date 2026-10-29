@@ -56,6 +56,35 @@ describe('GitHubReader', () => {
             expect(issuesAndPullRequests).toHaveBeenNthCalledWith(2, expect.objectContaining({ page: 2 }));
             expect(issuesAndPullRequests).toHaveBeenNthCalledWith(3, expect.objectContaining({ page: 3 }));
         });
+        it('should read the issue type and priority field', async () => {
+            jest.mocked(issuesAndPullRequests)
+                .mockReset()
+                .mockResolvedValueOnce({
+                    data: {
+                        items: [
+                            {
+                                ...makeGhIssue(1),
+                                type: { name: 'Bug' },
+                                issue_field_values: [
+                                    { issue_field_name: 'Severity', value: 'S1', single_select_option: { name: 'S1' } },
+                                    { issue_field_name: 'Priority', value: 'Critical', single_select_option: { name: 'Critical' } },
+                                ],
+                            },
+                            { ...makeGhIssue(2), type: { name: 'Task' }, issue_field_values: [] },
+                            makeGhIssue(3),
+                        ],
+                    },
+                })
+                .mockResolvedValueOnce({ data: { items: [] } });
+
+            const result = await reader.findByCriteria({ repo: 'repo', types: ['issue'] });
+
+            expect(result).toMatchObject([
+                { id: '1', issueType: 'Bug', priority: 'Critical' },
+                { id: '2', issueType: 'Task', priority: null },
+                { id: '3', issueType: null, priority: null },
+            ]);
+        });
         it('should filter for issues when only issues are requested', async () => {
             jest.mocked(issuesAndPullRequests)
                 .mockReset()
@@ -154,4 +183,3 @@ describe('GitHubReader', () => {
         });
     });
 });
-
