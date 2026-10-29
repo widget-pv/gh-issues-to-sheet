@@ -35,6 +35,7 @@ describe('GSheetWriter', () => {
             state: 'closed',
             milestone: null,
             closedAt: null,
+            labels: ['bug', 'help wanted'],
             url: `https://github.com/serban-petrescu/gh-issues-to-sheet/issues/${id}`,
             createdAt: `2022-12-30T09:${id.padStart(2, '0')}:00.000Z`,
             repository,
@@ -45,6 +46,7 @@ describe('GSheetWriter', () => {
         const issue = buildIssue(id);
         return {
             ...issue,
+            labels: issue.labels.join(', '),
             title: changeTitle ? issue.title + ' - Old' : issue.title,
             a1Range: '',
             rowIndex: 0,
@@ -135,6 +137,24 @@ describe('GSheetWriter', () => {
             expect(rows[0].delete).not.toHaveBeenCalled();
             expect(rows[1].save).not.toHaveBeenCalled();
             expect(rows[1].delete).not.toHaveBeenCalled();
+        });
+        it('should write labels as a comma-separated column', async () => {
+            await writer.writeIssues([buildIssue('1'), { ...buildIssue('2'), labels: [] }], { sheetUrl, deltaUpdate: false });
+
+            expect(tab.addRows).toHaveBeenCalledWith([
+                expect.arrayContaining(['bug, help wanted']),
+                expect.not.arrayContaining(['bug, help wanted']),
+            ]);
+        });
+        it('should update rows when delta updating an sheet with changed labels', async () => {
+            const row = buildRow('1');
+            row.labels = 'bug';
+            jest.mocked(tab.getRows).mockResolvedValue([row]);
+
+            await writer.writeIssues([buildIssue('1')], { sheetUrl, deltaUpdate: true });
+
+            expect(row.save).toHaveBeenCalled();
+            expect(row.labels).toEqual('bug, help wanted');
         });
         it('should retry in case the save fails', async () => {
             const row = buildRow('1', true);
